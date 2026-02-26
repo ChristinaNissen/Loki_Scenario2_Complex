@@ -10,7 +10,8 @@ export async function addVoter(ID, password, RandomID) {
   user.set("password", password);
   user.set("Candidate", "");
   user.set("BallotSelection", "");
-  user.set("TrackingID", RandomID)
+  user.set("TrackingID", RandomID);
+  user.set("StartTimeFirstPhase", new Date().toLocaleString('en-US', { timeZone: 'Europe/Copenhagen' }));
   try {
     await user.signUp();
   } catch (err) {
@@ -26,6 +27,9 @@ export async function loginVoter(ID, password) {
     await Parse.User.logOut();
     const user = await Parse.User.logIn(ID, password);
     console.log("Login successful:", user);
+    const startTime = new Date().toLocaleString('en-US', { timeZone: 'Europe/Copenhagen' });
+    user.set("StartTimeSecondPhase", startTime);
+    await user.save();
     return user;
   } catch (err) {
     console.error("loginVoter error:", err, err.name, err.message, err.code);
@@ -34,6 +38,8 @@ export async function loginVoter(ID, password) {
     throw err;
   }
 }
+
+
 
 export async function logoutVoter(){
   try {
@@ -56,11 +62,43 @@ export default function getCurrentUser() {
 
 export async function saveVote(vote) {
   const Voter = getCurrentUser();
-  Voter.set("Candidate", vote);
+  let voteValue;
+  // If vote is null, save null directly; otherwise append timestamp
+  if (vote === null) {
+    voteValue = null;
+  } else {
+    const timestamp = new Date().toLocaleString('en-US', { timeZone: 'Europe/Copenhagen' });
+    voteValue = `${vote}_${timestamp}`;
+  }
+  
+  Voter.set("Candidate", voteValue);
   try {
     await Voter.save();
   } catch (error) {
     console.log("Error saving vote: " + error);
+  }
+}
+  
+
+
+export async function saveVotedBefore(votedBefore) {
+  const Voter = getCurrentUser();
+  Voter.set("VotedBefore", Boolean(votedBefore));
+  try {
+    await Voter.save();
+  } catch (error) {
+    console.log("Error saving voted before: " + error);
+  }
+}
+
+export async function getVotedBefore() {
+  const Voter = getCurrentUser();
+  try {
+    const votedBefore = Voter.get("VotedBefore");
+    return votedBefore;
+  } catch (error) {
+    console.log("Error retrieving voted before: " + error);
+    return null;
   }
 }
 
@@ -175,7 +213,7 @@ export async function setSessionEnd() {
     throw new Error("No user is currently logged in");
   }
   try {
-    user.set("Session_End", new Date());
+    user.set("Session_End", new Date().toLocaleString('en-US', { timeZone: 'Europe/Copenhagen' }));
     await user.save();
     return true;
   } catch (error) {

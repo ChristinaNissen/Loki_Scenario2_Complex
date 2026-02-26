@@ -44,7 +44,7 @@ const StudyInfo1 = () => {
             <div className="step-number">1</div>
             <div className="step-content">
               <p>
-                All candidates are fictional. For this study, we ask you to cast your vote as if this is your <strong>first time voting</strong> in the election.
+All candidates are fictional. For this part of the study, we ask you to imagine that you are being coerced <em>before</em> casting your true vote in the election. Please follow the coercer’s instructions and <strong>cast a vote for 'John Doe'</strong>.
               </p>
               <label className="check-box blue-bg-highlight">
                 <input
@@ -53,8 +53,7 @@ const StudyInfo1 = () => {
                   onChange={handleChangeCheckbox}
                   className="blue-bg-highlight"
                 />
-                I understand and will vote as if this is my first time
-              </label>
+              I understand and will follow the coercer’s instructions to cast my vote for John Doe.              </label>
             </div>
           </div>
 

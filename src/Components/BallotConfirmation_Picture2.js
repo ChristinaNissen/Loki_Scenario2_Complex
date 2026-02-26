@@ -136,6 +136,7 @@ function BallotConfirmationPicture2(setIsLoggedIn) {
 
   // Retrieve candidate name from navigation state; fallback if not set.
   const votedCandidate = location.state?.votedCandidate || "Candidate Unknown";
+  const candidateNameOnly = votedCandidate.split('_')[0];
 
   const now = new Date();
   const dateTime = now.toLocaleString();
@@ -202,7 +203,7 @@ function BallotConfirmationPicture2(setIsLoggedIn) {
         You should <strong>not share</strong> your picture with anyone, and you should <strong>not save</strong> it anywhere.
       </li>
       <li>
-        If you forget this card, you will <strong>NOT be able to update your vote</strong> later in the election.
+        If you forget this picture, you will <strong>NOT be able to update your vote</strong> later in the election.
       </li>
     </ul>
   </div>
@@ -226,7 +227,7 @@ function BallotConfirmationPicture2(setIsLoggedIn) {
             {imageName}
           </div>
               <div className="confirmation-datetime">{dateTime}</div>
-              <div className="confirmation-candidate"> {votedCandidate}</div>
+              <div className="confirmation-candidate"> {candidateNameOnly}</div>
             </div>
         
         </div>
@@ -240,8 +241,8 @@ function BallotConfirmationPicture2(setIsLoggedIn) {
     <div className="modal-confirmation">
       <p style={{ fontSize: "18px", fontWeight: "bold" }}>Are you sure you want to log out?</p>
        <p>
-        When you log out, you will not be able to view your card again.<br />
-        If you forget your card, you will <strong>NOT be able to update your vote</strong> later in the election.
+        When you log out, you will not be able to view your picture again.<br />
+        If you forget your picture, you will <strong>NOT be able to update your vote</strong> later in the election.
       </p>
       <div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: "16px" }}>
         <button className="button" onClick={handleLogout}>Yes</button>

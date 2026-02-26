@@ -5,6 +5,7 @@ import ProcessBar from "./ProcessBar";
 import Footer from "./Footer";
 import "./Voting-system.css";
 import "./VotedBefore.css";
+import { saveVotedBefore } from "../API/Voter.js";
 
 const VotedBefore = () => {
   const navigate = useNavigate();
@@ -24,16 +25,18 @@ const VotedBefore = () => {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
      if (selected === null) {
       setShowError(true);
       return;
     }
     if (selected === true) {
       setUserSelectedYes(true);
+      await saveVotedBefore(true);
       navigate("/selection");
     } else if (selected === false) {
       setUserSelectedYes(false);
+      await saveVotedBefore(false);
       navigate("/voting");
     }
   };
