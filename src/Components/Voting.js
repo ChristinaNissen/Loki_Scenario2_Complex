@@ -5,7 +5,7 @@ import "./Voting-system.css";
 import "./Voting.css";
 import ProcessBar from "./ProcessBar";
 import VoteContext from "../Contexts/VoteContext";
-import { saveVote, getCandidate, getBooleanSelection, getVisualRepresentation } from '../API/Voter.js';
+import { saveVote, getCandidate, getBooleanSelection } from '../API/Voter.js';
 
 
 
@@ -49,19 +49,12 @@ const Voting = () => {
     try {
       // Get the existing candidate from the database
       const existingCandidate = await getCandidate();
-      const visualRepresentation = await getVisualRepresentation();
       
       // If candidate is empty
       if (!existingCandidate || existingCandidate === "") {
-        // If visual representation is also empty, set candidate to null
-        if (!visualRepresentation) {
-          await saveVote(null);
-          navigate("/confirmation", { state: { votedCandidate: null }, replace: true });
-        } else {
-          // If visual representation exists, save the vote
           await saveVote(candidateName);
           navigate("/confirmation", { state: { votedCandidate: candidateName }, replace: true });
-        }
+        
       } else {
         // If candidate exists, check if correct selections is true
         const correctSelections = await getBooleanSelection();
