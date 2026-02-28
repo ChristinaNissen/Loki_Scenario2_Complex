@@ -12,15 +12,6 @@ const importAllImages = (r) => r.keys().map(r);
 const imageContext = require.context('../Images', false, /\.(jpg|jpeg|png|gif)$/);
 const allImagesRaw = importAllImages(imageContext);
 
-// Helper function: Fisher-Yates shuffle
-const shuffleArray = (array) => {
-  const newArr = array.slice();
-  for (let i = newArr.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArr[i], newArr[j]] = [newArr[j], newArr[i]];
-  }
-  return newArr;
-};
 
 // Filter to keep only one image per unique base name (without _01b, _02s suffixes)
 const getCleanBaseName = (imgSrc) => {
@@ -42,17 +33,28 @@ let allImagesFiltered = Array.from(uniqueImages.values());
 // Ensure alpaca is in the list
 const alpacaImage = allImagesFiltered.find(img => getCleanBaseName(img) === 'alpaca');
 
-// Shuffle all images first
-allImagesFiltered = shuffleArray(allImagesFiltered);
+
+// Sort all images alphabetically by clean base name
+allImagesFiltered.sort((a, b) => {
+  const nameA = getCleanBaseName(a);
+  const nameB = getCleanBaseName(b);
+  return nameA.localeCompare(nameB);
+});
 
 // Limit to 500 images
 let allImages = allImagesFiltered.slice(0, 500);
 
 // Ensure alpaca is among the 500
 if (alpacaImage && !allImages.includes(alpacaImage)) {
-  // Replace a random image with alpaca
-  const randomIdx = Math.floor(Math.random() * allImages.length);
-  allImages[randomIdx] = alpacaImage;
+  // Add alpaca to the list and re-sort
+  allImages.push(alpacaImage);
+  allImages.sort((a, b) => {
+    const nameA = getCleanBaseName(a);
+    const nameB = getCleanBaseName(b);
+    return nameA.localeCompare(nameB);
+  });
+  // Keep only 500
+  allImages = allImages.slice(0, 500);
 }
 
 console.log('Total unique images loaded:', allImages.length);
@@ -64,7 +66,7 @@ const VisualSelectionPicture = () => {
   const { userSelectedYes } = useContext(VoteContext);
   const navigate = useNavigate();
 
-  const [items] = useState(() => shuffleArray(allImages));
+  const [items] = useState(() => allImages);
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [showError, setShowError] = useState(false);
@@ -109,9 +111,9 @@ const VisualSelectionPicture = () => {
   }, []);
 
 
-  const handleSelect = (idx) => {
+    const handleSelect = (imgSrc) => {
     setSelected(prev =>
-      prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
+      prev.includes(imgSrc) ? prev.filter(src => src !== imgSrc) : [...prev, imgSrc]
     );
   };
 
@@ -140,10 +142,9 @@ const VisualSelectionPicture = () => {
 
   const confirmSelection = async () => {
     // Get base names for selected images
-    const selectedBaseNames = selected.map(idx => {
-      const src = filteredItems[idx];
-      if (!src || typeof src !== 'string') return '';
-      return getBaseName(src);
+    const selectedBaseNames = selected.map(imgSrc => {
+      if (!imgSrc || typeof imgSrc !== 'string') return '';
+      return getBaseName(imgSrc);
     }).filter(Boolean);
 
     // Handle visualRepresentation - for pictures, look for image_visual key
@@ -174,10 +175,9 @@ const VisualSelectionPicture = () => {
 
     try {
       // Save only the file names (not base names) for ballot selections
-      await saveBallotSelections(selected.map(idx => {
-        const src = filteredItems[idx];
-        if (!src || typeof src !== 'string') return '';
-        return src.split('/').pop();
+      await saveBallotSelections(selected.map(imgSrc => {
+        if (!imgSrc || typeof imgSrc !== 'string') return '';
+        return imgSrc.split('/').pop();
       }).filter(Boolean));
       // Use the calculated isCorrect value directly instead of the state
       await saveCorrectSelections(Boolean(isCorrect));
@@ -314,13 +314,13 @@ const VisualSelectionPicture = () => {
                   const globalIdx = page * PAGE_SIZE + idx;
                   return (
                     <div
-                      key={globalIdx}
-                      className={`visual-selection-picture${selected.includes(globalIdx) ? " selected" : ""}`}
-                      onClick={() => handleSelect(globalIdx)}
-                      style={{ cursor: "pointer" }}
-                    >
+                        key={imgSrc}
+                        className={`visual-selection-picture${selected.includes(imgSrc) ? " selected" : ""}`}
+                        onClick={() => handleSelect(imgSrc)}
+                        style={{ cursor: "pointer" }}
+                      >
                       <div className="picture-img-wrapper">
-                        <img src={imgSrc} alt={`visual-${globalIdx}`} />
+                        <img src={imgSrc} alt={`visual-${page * PAGE_SIZE + idx}`} />
                       </div>
                       <div className="picture-label">
                         {getDisplayName(imgSrc)}
@@ -370,15 +370,14 @@ const VisualSelectionPicture = () => {
                 Once confirmed, you will not receive feedback on whether your selection is correct. <br></br>If your selection is incorrect, your vote will <strong>NOT be updated</strong>.
               </p>
               <div className="selected-pictures-preview-picture">
-                {selected.map(idx => {
-                  const imgSrc = filteredItems[idx];
+                               {selected.map(imgSrc => {
                   if (!imgSrc) return null; // Safety check
                   const label = getDisplayName(imgSrc);
                   return (
-                    <div key={idx} className="preview-item-picture" style={{ display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
+                    <div key={imgSrc} className="preview-item-picture" style={{ display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
                       <button
                         onClick={() => {
-                          setSelected(prev => prev.filter(i => i !== idx));
+                          setSelected(prev => prev.filter(src => src !== imgSrc));
                         }}
                         style={{
                           position: "absolute",
@@ -404,7 +403,7 @@ const VisualSelectionPicture = () => {
                       >
                         ×
                       </button>
-                      <img src={imgSrc} alt={`preview-${idx}`} />
+                      <img src={imgSrc} alt={`preview-${label}`} />
                       <div className="picture-label" style={{ marginTop: 8, fontWeight: "bold", textAlign: "center" }}>
                         {label}
                       </div>
