@@ -37,7 +37,8 @@ const VotedBefore = () => {
     } else if (selected === false) {
       setUserSelectedYes(false);
       await saveVotedBefore(false);
-      navigate("/voting");
+      //navigate("/voting");
+      navigate("/voting2");
     }
   };
 

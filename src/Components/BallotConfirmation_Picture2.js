@@ -155,7 +155,7 @@ function BallotConfirmationPicture2(setIsLoggedIn) {
        try {
           await saveVisuaRepresentation({ image_visual: "alpaca" });
           await setSessionEnd();
-         navigate("/studyinfo2");
+         navigate("/studyinfo4");
        } catch (error) {
          console.error("Error during logout:", error);
        }
