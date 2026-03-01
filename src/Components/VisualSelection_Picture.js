@@ -311,7 +311,6 @@ const VisualSelectionPicture = () => {
                 <p className="no-pictures-message">No pictures found. Try adjusting your search.</p>
               ) : (
                 pagedItems.map((imgSrc, idx) => {
-                  const globalIdx = page * PAGE_SIZE + idx;
                   return (
                     <div
                         key={imgSrc}
