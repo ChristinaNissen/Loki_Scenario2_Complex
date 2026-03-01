@@ -10,7 +10,9 @@ import { saveVisuaRepresentation, setSessionEnd } from "../API/Voter";
 
 // Import your images
 //import img4 from "../Images/alligator.jpg";
-import img5 from "../Images/alpaca.jpg";
+// import img5 from "../Images/alpaca.jpg";
+import img86 from "../Images/ice_cream.jpg";
+
 /*
 import img6 from "../Images/Apples.png";
 import img7 from "../Images/aquarium.jpg";
@@ -125,13 +127,13 @@ function BallotConfirmationPicture(setIsLoggedIn) {
     window.scrollTo(0, 0);
   }, []);
 
-  // Use static alpaca image
-  const image_visual = img5;
-  const imageName = "Alpaca";
+  // Use static ice cream image
+  const image_visual = img86;
+  const imageName = "Ice Cream";
 
-  // Set the alpaca image in context so it's available for VisualSelection_Picture
+  // Set the ice cream image in context so it's available for VisualSelection_Picture
   React.useEffect(() => {
-    setSelectedImage(img5);
+    setSelectedImage(img86);
   }, [setSelectedImage]);
 
   // Retrieve candidate name from navigation state; fallback if not set.
@@ -153,7 +155,7 @@ function BallotConfirmationPicture(setIsLoggedIn) {
 
   const handleLogout = async () => {
        try {
-          await saveVisuaRepresentation({ image_visual: "alpaca" });
+          await saveVisuaRepresentation({ image_visual: "ice_cream" });
           await setSessionEnd();
          navigate("/studyinfo2");
        } catch (error) {
