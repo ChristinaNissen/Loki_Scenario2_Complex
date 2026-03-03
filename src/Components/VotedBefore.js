@@ -56,7 +56,8 @@ const VotedBefore = () => {
         <div className="security-box-voted-before">
            <p className="text-small">
             <strong>Why is this step needed?</strong><br />
-            This step is essential for your security and the integrity of the election. When voting from home or outside a controlled environment, there is a risk that someone could try to influence or pressure you to vote in a certain way. <br></br><br></br>To protect against such coercion attacks, this system is designed to ensure that your vote remains private and free from outside influence. As part of this protection, you are asked to verify whether you have voted before in this election. This helps safeguard your right to vote independently and securely, even outside a polling station.<br /><br />
+            This step ensures that you can update your vote if needed. If this is your first time voting in this election, click "<strong>No</strong>" below. If you want to update your previous vote, click "<strong>Yes</strong>" below, then identify your previous vote(s) by selecting the pictures you have seen before, and cast your new vote.<br /><br />
+            This step also protects against coercion. If you have already cast your true vote before being coerced, you can click "<strong>No</strong>" (even if you have voted before) to keep your true vote. If you were coerced before casting your true vote, you can later click "<strong>Yes</strong>" when you are alone, select the pictures from the coerced session, and cast your true vote.<br /><br />
             <a href="/help#what-is-coercion" className="faq-link">Read more in the FAQ</a>
           </p>
         </div>
