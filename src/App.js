@@ -27,8 +27,8 @@ import Parse from "parse";
 //const PARSE_JAVASCRIPT_KEY = "AXphTNbNhIt6mb9NK5xa2I5SKZ0UwxyBl3aAAH1u";
 
 Parse.initialize(
-  "AqOODQoDMFkZ0zuQAP58q77TOLmS3ucukaHVrJ1a", // Application ID
-  "D7drigHhb8FGjKKAdkCb5rxCOZwTlYBswsdSqNxX"  // JavaScript Key
+  "HUmDN7WRsRDuWsrjnhuHrpdHHHoj87QgVzF8Kk8y", // Application ID
+  "FHsWPV4fnx2Rqp0A18LouzOCca4aAvbVCWBXExkA"  // JavaScript Key
 );
 Parse.serverURL = "https://parseapi.back4app.com/";
 //Parse.serverURL = PARSE_HOST_URL;
@@ -71,8 +71,8 @@ function App() {
 
       <VoteContext.Provider value={{ userSelectedYes, setUserSelectedYes, selectedImage, setSelectedImage, selectedImageName, setSelectedImageName, selectedImageIndex, setSelectedImageIndex }}>
         <Routes>
-          <Route path="/consent" element={<ConsentForm />} />
-          <Route path="/" element={<ConsentForm2 />} />
+          <Route path="/" element={<ConsentForm />} />
+          <Route path="/consent" element={<ConsentForm2 />} />
           <Route path="/studyinfo1" element={<StudyInfo1 />} />
           <Route path="/studyinfo2" element={<StudyInfo2 />} />
           <Route path="/studyinfo3" element={<StudyInfo3 />} />
