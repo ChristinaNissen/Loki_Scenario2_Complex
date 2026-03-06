@@ -44,7 +44,7 @@ const StudyInfo3 = () => {
             <div className="step-number">1</div>
             <div className="step-content">
               <p>
-This voting system is designed to help voters resist coercion. All candidates are fictional. In the first part of the study, you cast your true vote in an election. In this second part, please imagine that you are being coerced after casting your true vote. To protect your original choice, we ask that you <strong>cast an invalid vote</strong> for 'Sofia Lee' in the voting system.              </p>
+This voting system is designed to help voters resist coercion. All candidates are fictional. In the first part of the study, you cast a vote for John Doe, following the coercer’s instructions. In this second part, to protect your vote, we ask that you <strong>update this vote</strong> for the candidate 'Sofia Lee' in the election.              </p>
               <label className="check-box blue-bg-highlight">
                 <input
                   type="checkbox"
@@ -52,7 +52,8 @@ This voting system is designed to help voters resist coercion. All candidates ar
                   onChange={handleChangeCheckbox}
                   className="blue-bg-highlight"
                 />
-I understand and will cast an invalid vote for 'Sofia Lee' to safeguard my original choice against coercion.              </label>
+                I understand and will update my vote to cast a true vote for Sofia Lee.
+              </label>
             </div>
           </div>
 
