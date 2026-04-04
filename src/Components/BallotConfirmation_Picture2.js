@@ -219,7 +219,7 @@ function BallotConfirmationPicture2(setIsLoggedIn) {
             {imageName}
           </div>
               <div className="confirmation-datetime">{dateTime}</div>
-              <div className="confirmation-candidate"> {votedCandidate}</div>
+              <div className="confirmation-candidate"> {candidateNameOnly}</div>
             </div>
           <img
           className="image-picture"
